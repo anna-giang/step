@@ -23,8 +23,11 @@
   margin-top: 20px;
 }
 
-.section-pic {
+.section-img {
     width: 100%;
+}
+.linked-img:hover{
+    opacity: 75%;
 }
 
 .blog-post {
