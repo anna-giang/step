@@ -7,20 +7,48 @@
     <script src="script.js"></script>
   </head>
   <body>
-    <div id="content">
-        <h1>Blog</h1>
-
-        <h2>Learning to socialise - in person again 😅</h2>
-        <p>2020.08.06</p>
-        <div class="blog-post" id="learning-to-socialise-in-person-again">
-            On the weekend, I caught up with my high-school friends over some brunch.
-            <img class="section-pic" src="/images/blog-posts/learning-to-socialise-in-person/flovie-cafe.jpg">
-            After only meeting via video this whole year, it was great to see each other in the flesh.
-            <img class="section-pic" src="/images/blog-posts/learning-to-socialise-in-person/manchester-press.jpg">
+    <div id="content" class="flex-container">
+        <div class="header-div">
+            <h1>Blog</h1>
         </div>
-        <!-- adding a dash b (-b) to the button id to differentiate from div id that the toggleBlogPost will be toggling -->
-        <button id="learning-to-socialise-in-person-again-b" onclick="toggleBlogPost(this.id)">Read more</button>
 
+        <div class="flex-container">
+            <div class="flex-item">
+                <div class="header-div">
+                    <h2>Learning to socialise - in person again 😅</h2>
+                    <p>2020.08.06</p>
+                </div>
+                
+                <div class="blog-post" id="learning-to-socialise-in-person-again">
+                    On the weekend, I caught up with my high-school friends over some brunch.
+                    <img class="section-pic" src="/images/blog-posts/learning-to-socialise-in-person/flovie-cafe.jpg">
+                    After only meeting via video this whole year, it was great to see each other in the flesh.
+                    <img class="section-pic" src="/images/blog-posts/learning-to-socialise-in-person/manchester-press.jpg">
+                </div>
+                <!-- adding a dash b (-b) to the button id to differentiate from div id that the toggleBlogPost will be toggling -->
+                <button id="learning-to-socialise-in-person-again-b" onclick="toggleBlogPost(this.id)">Read more</button>
+
+            </div>
+
+            <div class="flex-item">
+                <div class="header-div">
+                    <h2>Learning to socialise - in person again 😅</h2>
+                    <p>2020.08.06</p>
+                </div>
+
+                <div class="blog-post" id="learning-to-socialise-in-person">
+                    On the weekend, I caught up with my high-school friends over some brunch.
+                    <img class="section-pic" src="/images/blog-posts/learning-to-socialise-in-person/flovie-cafe.jpg">
+                    After only meeting via video this whole year, it was great to see each other in the flesh.
+                    <img class="section-pic" src="/images/blog-posts/learning-to-socialise-in-person/manchester-press.jpg">
+                </div>
+                <!-- adding a dash b (-b) to the button id to differentiate from div id that the toggleBlogPost will be toggling -->
+                <button id="learning-to-socialise-in-person-b" onclick="toggleBlogPost(this.id)">Read more</button>
+
+            </div>
+
+        </div>
+        
     </div>
   </body>
 </html>
