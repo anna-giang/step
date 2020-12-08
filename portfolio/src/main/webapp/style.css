@@ -11,3 +11,8 @@
 .section-pic {
     width: 650px;
 }
+
+.blog-post {
+    /* Initially hide all blog posts until user decides to "read more" */
+    display: none;
+}

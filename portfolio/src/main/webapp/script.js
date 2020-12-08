@@ -42,3 +42,24 @@ function addRandomFact() {
   const factContainer = document.getElementById('fact-container');
   factContainer.innerText = fact;
 }
+
+/**
+ * Show the full blog post text for blog post div with the given ID.
+ * @param {*} blogId ID of the div of the blog post to be shown.
+ * @returns none
+ */
+function toggleBlogPost(buttonId) {
+    var blogDivId = buttonId.slice(0, buttonId.length-2);
+    var content = document.getElementById(blogDivId);
+    var button = document.getElementById(buttonId);
+
+    if (content.style.display === "none" || content.style.display === "") {
+        content.style.display = "block";
+        // Change the label in the button accordingly to what button will do
+        button.innerHTML = "Read less";
+    } else {
+        content.style.display = "none";
+        button.innerHTML = "Read more";
+    }
+
+}
