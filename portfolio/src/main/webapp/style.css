@@ -16,3 +16,22 @@
     /* Initially hide all blog posts until user decides to "read more" */
     display: none;
 }
+
+.gallery-img {
+    width: 100%;
+    margin-top: 8px;
+    vertical-align: middle;
+}
+
+/* Create two equal columns that sit next to each other */
+.gallery-col {
+  flex: 45%;
+  max-width: 45%;
+  padding: 0 4px;
+}
+
+.gallery-row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
