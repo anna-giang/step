@@ -92,3 +92,8 @@
 #contacts-div .material-icons {
     margin-right: 50px;
 }
+
+button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
