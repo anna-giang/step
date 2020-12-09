@@ -1,13 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Open+Sans&display=swap');
 
+/* Element Layout */
+
 .flex-container {
     display: flex;
     flex-wrap: wrap;
-}
-
-.header-div {
-    border-bottom: 1px solid black;
-    width: 100%;
 }
 
 .flex-item {
@@ -21,9 +18,14 @@
     width: 75%;
 }
 
-#greeting-container {
-    margin-top: 20px;
+/* Header */ 
+
+.header-div {
+    border-bottom: 1px solid black;
+    width: 100%;
 }
+
+/* Images */
 
 .section-img {
     margin-top: 8px;
@@ -34,10 +36,14 @@
     opacity: 75%;
 }
 
+/* Blog Posts in blog.html */ 
+
 .blog-post {
     /* Initially hide all blog posts until user decides to "read more" */
     display: none;
 }
+
+/* Gallery */ 
 
 .gallery-img {
     margin-top: 8px;
@@ -45,7 +51,6 @@
     width: 100%;
 }
 
-/* Create two equal columns that sit next to each other */
 .gallery-col {
     flex: 45%;
     max-width: 45%;
@@ -57,6 +62,8 @@
     flex-wrap: wrap;
     padding: 0 4px;
 }
+
+/* Text Styling */
 
 .heading-text {
     font-family: 'Noto Sans', sans-serif;
@@ -78,6 +85,8 @@
     font-size: 15px;
 }
 
+/* Contact Information Footer */ 
+
 #contacts-div {
     border-top: 1px solid black;
     width: 100%;
@@ -92,6 +101,8 @@
 #contacts-div .material-icons {
     margin-right: 50px;
 }
+
+/* Buttons */
 
 button {
     background-color: #555; /* Black */
