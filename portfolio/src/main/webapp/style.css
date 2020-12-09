@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Open+Sans&display=swap');
+
 .flex-container {
     display: flex;
     flex-wrap: wrap;
@@ -52,4 +54,24 @@
   display: flex;
   flex-wrap: wrap;
   padding: 0 4px;
+}
+
+.heading-text {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 65px;
+}
+
+.subheading-text {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 35px;
+}
+
+.body-text {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+}
+
+.footnote-text {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
 }
