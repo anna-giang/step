@@ -13,21 +13,9 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
- 
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-*/
-
+ * Adds a random fact to the page.
+ * @returns none
+ */
 function addRandomFact() {
   const facts =
     ["I have two younger brothers both about a foot taller than me.", 
@@ -35,7 +23,7 @@ function addRandomFact() {
      "I have never been to anywhere else in Australia except Melbourne, where I was born and raised."
     ];
 
-  // Pick a random greeting.
+  // Pick a random fact.
   const fact = facts[Math.floor(Math.random() * facts.length)];
 
   // Add it to the page.
@@ -49,6 +37,7 @@ function addRandomFact() {
  * @returns none
  */
 function toggleBlogPost(buttonId) {
+    // Remove the '-b' from the button ID to get the ID of div of blog post.
     var blogDivId = buttonId.slice(0, buttonId.length-2);
     var content = document.getElementById(blogDivId);
     var button = document.getElementById(buttonId);
@@ -61,5 +50,4 @@ function toggleBlogPost(buttonId) {
         content.style.display = "none";
         button.innerHTML = "Read more";
     }
-
 }
