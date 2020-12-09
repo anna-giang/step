@@ -7,6 +7,7 @@
 
 .header-div {
     width: 100%;
+    border-bottom: 1px solid black;
 }
 
 .flex-item {
@@ -27,6 +28,7 @@
 
 .section-img {
     width: 100%;
+    margin-top: 8px;
 }
 .linked-img:hover{
     opacity: 75%;
@@ -74,4 +76,19 @@
 .footnote-text {
     font-family: 'Open Sans', sans-serif;
     font-size: 15px;
+}
+
+#contacts-div {
+    width: 100%;
+    border-top: 1px solid black;
+}
+
+#contacts-div .flex-container{
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+}
+
+#contacts-div .material-icons {
+    margin-right: 50px;
 }
