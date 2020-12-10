@@ -33,7 +33,7 @@ function addRandomFact() {
 
 /**
  * Show the full blog post text for blog post div with the given ID.
- * @param {*} blogId ID of the div of the blog post to be shown.
+ * @param {String} blogId ID of the div of the blog post to be shown.
  * @returns none
  */
 function toggleBlogPost(buttonId) {

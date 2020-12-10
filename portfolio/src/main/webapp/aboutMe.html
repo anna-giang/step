@@ -9,71 +9,76 @@
   </head>
   <body>
     <div id="content" class="flex-container">
-        <div class="header-div">
-            <h1 class="heading-text">About Me</h1>
-        </div>
-        <div class="flex-item">
-            <h2 class="subheading-text">Basic Info</h2>
-            <p class="body-text">
-                <b>Preferred Name:</b> Anna Giang <br>
-                <b>Preferred Pronoun:</b> She/her <br>
-                <b>Birthday</b> 12th November <br>
-                <b>Location:</b> Melbourne, Victoria, Australia
-            </p>
-        </div>
-        <div class="flex-item">
-            <img class="section-img" src="/images/covers/about-me-cover.jpg" alt="Anna is Shanghai">
-        </div>
-        <div class="flex-item">
-            <h2 class="subheading-text">Background</h2>
-            <p class="body-text">Aspiring software engineer. Penultimate year student in Bachelor of 
+      <div class="header-div">
+        <h1 class="heading-text">About Me</h1>
+      </div>
+      <div class="flex-item">
+          <h2 class="subheading-text">Basic Info</h2>
+          <p class="body-text">
+              <b>Preferred Name:</b> Anna Giang <br>
+              <b>Preferred Pronoun:</b> She/her <br>
+              <b>Birthday</b> 12th November <br>
+              <b>Location:</b> Melbourne, Victoria, Australia
+          </p>
+      </div>
+      <div class="flex-item">
+        <img class="section-img" src="/images/covers/about-me-cover.jpg" alt="Anna is Shanghai">
+      </div>
+      <div class="flex-item">
+        <h2 class="subheading-text">Background</h2>
+        <p class="body-text">Aspiring software engineer. Penultimate year student in Bachelor of 
             Software Engineering (Hons) and Bachelor of Arts (Chinese Studies 
             and Korean Studies majors) at Monash University.
-            </p>
-        </div>
-        <div class="flex-item">
-            <h2 class="subheading-text">Experiences</h2>
-            <p class="body-text">STEP Intern at Google, 2020. Events Co-Director at Monash Association 
+        </p>
+      </div>
+      <div class="flex-item">
+        <h2 class="subheading-text">Experiences</h2>
+        <p class="body-text">STEP Intern at Google, 2020. Events Co-Director at Monash Association 
             of Coding (MAC). Engagement Coordinator at Robogals Monash. Korean 
             Language Facilitator for Monash Student Association. Previous Marketing
             Intern at the Korean Society of Victoria.
-            </p>
+        </p>
+      </div>
+      <div class="flex-item">
+        <h2 class="subheading-text">Interests and hobbies</h2>
+        <ul class="body-text">
+          <li>Coding competitions<br>
+            <span class="footnote-text">Complete beginner at this.</span>
+          </li>
+          <li>Korean dramas and music.<br>
+            <span class="footnote-text">Currently watching <a href="https://www.netflix.com/au/title/81290293" target="_blank">Start-Up</a>, 
+                which is about a AI-tech startup, conveniently aligning with my passion for coding.
+            </span>
+          </li>
+          <li>Chinese dramas and music.<br>
+            <span class="footnote-text">Particularly a fan of historical Chinese dramas - they're long but worth it!</span>
+          </li>
+          <li>Reading<br>
+            <span class="footnote-text">Mostly fiction novels, but currently branching into reading non-fiction.</span>
+          </li>
+                
+        </ul>
+      </div>
+      <div class="flex-item">
+        <h2 class="subheading-text">Interesting facts about me</h2>
+        <p class="body-text">Generate a random fact about me!</p>
+        <button onclick="addRandomFact()">NEW FACT</button>
+        <div id="fact-container" class="body-text"></div>
+      </div>
+      <div id="contacts-div" class="flex-container">
+        <div class="flex-container">
+          <span class="material-icons">code</span>
+          <a href=https://github.com/anna-giang/ target="_blank"><p class="body-text">GitHub</p></a>
         </div>
-        <div class="flex-item">
-            <h2 class="subheading-text">Interests and hobbies</h2>
-            <ul class="body-text">
-                <li>Coding competitions</li>
-                <span class="footnote-text">Complete beginner at this.</span>
-                <li>Korean dramas and music.</li>
-                <span class="footnote-text">Currently watching <a href="https://www.netflix.com/au/title/81290293" target="_blank">Start-Up</a>, 
-                    which is about a AI-tech startup, conveniently aligning with my passion for coding.
-                </span>
-                <li>Chinese dramas and music.</li>
-                <span class="footnote-text">Particularly a fan of historical Chinese dramas - they're long but worth it!</span>
-                <li>Reading</li>
-                <span class="footnote-text">Mostly fiction novels, but currently branching into reading non-fiction.</span>
-            </ul>
+        <div class="flex-container">
+          <span class="material-icons">chat</span>
+          <a href="https://linkedin.com/in/anna-giang1999" target="_blank"><p class="body-text">LinkedIn</p></a>
         </div>
-        <div class="flex-item">
-            <h2 class="subheading-text">Interesting facts about me</h2>
-            <p class="body-text">Generate a random fact about me!</p>
-            <button onclick="addRandomFact()">NEW FACT</button>
-            <div id="fact-container" class="body-text"></div>
+        <div class="flex-container">
+          <span class="material-icons">mail_outline</span>
+          <a href="mailto:anna.giang1999@gmail.com" target="_blank"><p class="body-text">Email</p></a>
         </div>
-        <div id="contacts-div" class="flex-container">
-            <div class="flex-container">
-                <span class="material-icons">code</span>
-                <a href=https://github.com/anna-giang/ target="_blank"><p class="body-text">GitHub</p></a>
-            </div>
-            <div class="flex-container">
-                <span class="material-icons">chat</span>
-                <a href="https://linkedin.com/in/anna-giang1999" target="_blank"><p class="body-text">LinkedIn</p></a>
-            </div>
-            <div class="flex-container">
-                <span class="material-icons">mail_outline</span>
-                <a href="mailto:anna.giang1999@gmail.com" target="_blank"><p class="body-text">Email</p></a>
-            </div>
-        </div>
+      </div>
     </div>
   </body>
 </html>
