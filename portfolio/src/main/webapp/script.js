@@ -52,3 +52,14 @@ function toggleBlogPost(buttonId) {
     button.innerHTML = 'Read more';
   }
 }
+
+/**
+ * Fetches "Hello Anna!" message from server at /data URL and adds the message to 
+ * the div with id "server-content".
+ * @return none
+ */
+function addHelloMessage() {
+  fetch('/data').then(response => response.text()).then((message) => {
+    document.getElementById('server-content').innerHTML = message; 
+  });
+}
