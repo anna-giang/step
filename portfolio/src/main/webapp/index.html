@@ -4,15 +4,51 @@
     <meta charset="UTF-8">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="script.js"></script>
   </head>
   <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    <div id="content" class="flex-container">
+      <div class="header-div">
+        <h1 class="heading-text">My Portfolio</h1>
+      </div>
+      <p class="body-text">My name is Anna Giang. Welcome to my portfolio.</p>
+      <div class="flex-container">
+        <div class="flex-item">
+          <h2 class="subheading-text">About Me</h2>
+          <a class="linked-img" href=aboutMe.html><img class="section-img" src="/images/covers/about-me-cover.jpg" alt="Anna in Shanghai"></a>
+          <p class="body-text">Who I am, what I do, and what I like.</p>
+        </div>
+        <div class="flex-item">
+          <h2 class="subheading-text">Projects</h2>
+          <a class="linked-img" href="projects.html"><img class="section-img" src="/images/covers/projects-cover.jpg" alt="Retro Mickey Mouse prints"></a>
+          <p class="body-text">A collection of my passion projects, most of them a work in progress!</p>
+        </div>
+        <div class="flex-item">
+          <h2 class="subheading-text">Blog</h2>
+          <a class="linked-img" href="blog.html"><img class="section-img" src="/images/covers/blog-cover.jpg" alt="Palace in South Korea"></a>
+          <p class="body-text">Hear about the more interesting episodes of my otherwise-pretty-average daily life.</p>
+        </div>
+        <div class="flex-item">
+          <h2 class="subheading-text">Gallery</h2>
+          <a class="linked-img" href="gallery.html"><img class="section-img" src="/images/covers/gallery-cover.jpg" alt="Sunset over the ocean"></a>
+          <p class="body-text">A summary of my recent life thus far, in pictures.</p>
+        </div>
+      </div>
+      <div id="contacts-div" class="flex-container">
+        <div class="flex-container">
+          <span class="material-icons">code</span>
+          <a href=https://github.com/anna-giang/ target="_blank"><p class="body-text">GitHub</p></a>
+        </div>
+        <div class="flex-container">
+          <span class="material-icons">chat</span>
+          <a href="https://linkedin.com/in/anna-giang1999" target="_blank"><p class="body-text">LinkedIn</p></a>
+        </div>
+        <div class="flex-container">
+          <span class="material-icons">mail_outline</span>
+          <a href="mailto:anna.giang1999@gmail.com" target="_blank"><p class="body-text">Email</p></a>
+        </div>
+      </div>
     </div>
   </body>
 </html>
