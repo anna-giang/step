@@ -30,11 +30,7 @@ public class DataServlet extends HttpServlet {
   private List<String> comments;
 
   public void init() {
-    // Hardcoding some comments
     comments = new ArrayList<>();
-    comments.add("Awesome portfolio!");
-    comments.add("Where did you take your profile picture?");
-    comments.add("That sunset looks amazing!");
   }
 
   @Override
