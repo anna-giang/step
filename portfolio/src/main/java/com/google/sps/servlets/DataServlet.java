@@ -40,6 +40,11 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(commentJson);
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    return;
+  }
+
   /**
    * Convert List to JSON string using the Gson library.
    * @param list the List to be converted to JSON
