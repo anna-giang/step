@@ -56,12 +56,15 @@ function toggleBlogPost(buttonId) {
 /**
  * Fetches comments JSON from server at /data URL and adds the message to 
  * the div with id "comment-list".
+ * @param quantity The number of comments to fetch from the server
  * @return none
  */
-function fetchComments() {
-  let quantity = 3;
+function fetchComments(quantity) {
   var queryString = '/data' + '?quantity=' + String(quantity);
   fetch(queryString).then(response => response.json()).then((commentData) => {
+    // clear any comment data currently displayed
+    document.getElementById('comment-list').innerHTML = ""
+
     let commentContent = "";
     for (let i = 0; i < commentData.length; i++) {
       let commentText = commentData[i].commentText; // The actual comment

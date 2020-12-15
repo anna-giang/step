@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="script.js"></script>
   </head>
-  <body onload="fetchComments()">
+  <body onload="fetchComments(5)"> <!-- Default to 5 comments on load -->
     <div id="content" class="flex-container">
       <div class="header-div">
         <h1 class="heading-text">My Portfolio</h1>
@@ -55,6 +55,16 @@
             </div>
           </form>
         </div>
+      </div>
+      <div id="comments-to-show-selector">
+        <form> <!-- not sure if the form wrapper is necessary -->
+          <select onchange="fetchComments(this.value)" name="comments-to-show">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </form>
       </div>
       <div id="comment-list" class="flex-container">
         <!-- Submitted comments will be generated here by fetchComments() on page load. -->
