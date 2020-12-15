@@ -56,15 +56,20 @@
           </form>
         </div>
       </div>
-      <div id="comments-to-show-selector">
-        <form> <!-- not sure if the form wrapper is necessary -->
-          <select onchange="fetchComments(this.value)" name="comments-to-show">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-          </select>
-        </form>
+      <div id="comment-display-toggles" class="flex-container">
+        <div class="display-toggle-heading">
+          <p class="body-text">View:</p>
+        </div>
+        <div class="display-toggle-form">
+          <form class="body-text" id="comments-to-show-selector">
+            <select onchange="fetchComments(this.value)" name="comments-to-show">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </form>
+        </div>
       </div>
       <div id="comment-list" class="flex-container">
         <!-- Submitted comments will be generated here by fetchComments() on page load. -->
