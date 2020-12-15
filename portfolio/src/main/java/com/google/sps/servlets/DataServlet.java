@@ -105,7 +105,7 @@ public class DataServlet extends HttpServlet {
     HashMap<String, String> fieldValues = new HashMap<String, String>();
 
     for (String param : fieldValueStr) {
-      String[] fieldAndValue = queryString.split("=");
+      String[] fieldAndValue = param.split("=");
       String field = fieldAndValue[0];
       String value = fieldAndValue[1];
       fieldValues.put(field, value);
