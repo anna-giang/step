@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -36,13 +37,18 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    // Limit number of comments fetched from server to numOfComments
+    int numOfComments = 3;
+    FetchOptions fetchOptions = FetchOptions.Builder.withLimit(numOfComments); 
+    
     Query query = new Query("Comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<HashMap<String, String>> commentList = new ArrayList<HashMap<String, String>>();
 
-    for (Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable(fetchOptions)) {
       // Each comment and the associated data (author, etc.) will be a HashMap, which converts to JSON object
       HashMap<String, String> comment = new HashMap<String, String>();
       String commentText = (String) entity.getProperty("commentText");
