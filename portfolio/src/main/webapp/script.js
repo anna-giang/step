@@ -60,7 +60,6 @@ function toggleBlogPost(buttonId) {
  */
 function fetchComments() {
   fetch('/data').then(response => response.json()).then((commentData) => {
-    console.log(commentData)
     let commentContent = "";
     for (let i = 0; i < commentData.length; i += 2) {
       let commentText = commentData[i]; // The actual comment

@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Comments will be retrieved from Datastore and returned in next change
     String commentJson = convertToJson(comments);
     response.setContentType("application/json");
     response.getWriter().println(commentJson);
@@ -42,11 +46,16 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get input from the form and store
-    String comment = request.getParameter("comment");
-    String authorName = request.getParameter("author-name");
-    comments.add(comment);
-    comments.add(authorName);
+    // Get input from the form
+    String commentText = request.getParameter("comment");
+    String commentAuthor = request.getParameter("author-name");
+
+    // Store in DataStore
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("commentText", commentText);
+    commentEntity.setProperty("commentAuthor", commentAuthor);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
