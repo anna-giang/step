@@ -38,8 +38,11 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
+    String queryString = request.getQueryString();
+    HashMap<String,String> fieldValues = getFieldValues(queryString);
+
     // Limit number of comments fetched from server to numOfComments
-    int numOfComments = 3;
+    int numOfComments = Integer.parseInt(fieldValues.get("quantity"));
     FetchOptions fetchOptions = FetchOptions.Builder.withLimit(numOfComments); 
     
     Query query = new Query("Comment");
@@ -89,5 +92,24 @@ public class DataServlet extends HttpServlet {
     Gson gson = new Gson();
     String json = gson.toJson(list);
     return json;
+  }
+
+  /**
+   * Converts queryString into HashMap of field and value pairs obtained 
+   * from the queryString
+   * @param queryString query string of which the field value pair are to be processed
+   * @return HashMap of field:value mappings
+   */
+  private HashMap<String, String> getFieldValues(String queryString) {
+    String[] fieldValueStr = queryString.split("&");
+    HashMap<String, String> fieldValues = new HashMap<String, String>();
+
+    for (String param : fieldValueStr) {
+      String[] fieldAndValue = queryString.split("=");
+      String field = fieldAndValue[0];
+      String value = fieldAndValue[1];
+      fieldValues.put(field, value);
+    }
+    return fieldValues;
   }
 }

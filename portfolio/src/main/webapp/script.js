@@ -59,7 +59,9 @@ function toggleBlogPost(buttonId) {
  * @return none
  */
 function fetchComments() {
-  fetch('/data').then(response => response.json()).then((commentData) => {
+  let quantity = 3;
+  var queryString = '/data' + '?quantity=' + String(quantity);
+  fetch(queryString).then(response => response.json()).then((commentData) => {
     let commentContent = "";
     for (let i = 0; i < commentData.length; i++) {
       let commentText = commentData[i].commentText; // The actual comment
