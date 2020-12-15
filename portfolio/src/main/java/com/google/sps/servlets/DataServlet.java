@@ -30,11 +30,7 @@ public class DataServlet extends HttpServlet {
   private List<String> comments;
 
   public void init() {
-    // Hardcoding some comments
     comments = new ArrayList<>();
-    comments.add("Awesome portfolio!");
-    comments.add("Where did you take your profile picture?");
-    comments.add("That sunset looks amazing!");
   }
 
   @Override
@@ -42,6 +38,18 @@ public class DataServlet extends HttpServlet {
     String commentJson = convertToJson(comments);
     response.setContentType("application/json");
     response.getWriter().println(commentJson);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get input from the form and store
+    String comment = request.getParameter("comment");
+    String authorName = request.getParameter("author-name");
+    comments.add(comment);
+    comments.add(authorName);
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
   }
 
   /**

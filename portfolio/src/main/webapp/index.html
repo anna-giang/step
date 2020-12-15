@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="fetchComments()">
     <div id="content" class="flex-container">
       <div class="header-div">
         <h1 class="heading-text">My Portfolio</h1>
@@ -35,11 +35,29 @@
           <p class="body-text">A summary of my recent life thus far, in pictures.</p>
         </div>
       </div>
-      <div class="flex-container">
-        <div class="flex-item">
-          <button onclick="addCommentData()">Fetch Message From Server</button>
+      <div id="comment-form" class="flex-container">
+        <div class="header-div">
+          <h2 class="subheading-text">Comments</h2>
+          <p class="body-text">Add your thoughts here!</p>
         </div>
-        <div id="server-content" class="flex-item"></div>
+        <div class="comment-form-body">
+          <form class="body-text" action="/data" method="POST">
+            <div>
+              <label for="comment">Comment</label><br/>
+              <input class="long-input" type="text" name="comment">
+            </div>
+            <div>
+              <label for="author-name">Name</label><br/>
+              <input class="short-input" type="text" name="author-name">
+            </div>
+            <div>
+              <button type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="comment-list" class="flex-container">
+        <!-- Submitted comments will be generated here by fetchComments() on page load. -->
       </div>
       <div id="contacts-div" class="flex-container">
         <div class="flex-container">

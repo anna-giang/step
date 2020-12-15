@@ -54,16 +54,20 @@ function toggleBlogPost(buttonId) {
 }
 
 /**
- * Fetches hardcoded comments JSON from server at /data URL and adds the message to 
- * the div with id "server-content".
+ * Fetches comments JSON from server at /data URL and adds the message to 
+ * the div with id "comment-list".
  * @return none
  */
-function addCommentData() {
+function fetchComments() {
   fetch('/data').then(response => response.json()).then((commentData) => {
-    let content = "";
-    for (let i = 0; i < commentData.length; i++) {
-      content += commentData[i] + "<br>";
+    console.log(commentData)
+    let commentContent = "";
+    for (let i = 0; i < commentData.length; i += 2) {
+      let commentText = commentData[i]; // The actual comment
+      let commentAuthor = commentData[i + 1]; // Comment author name
+      commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
+          + '<p class="body-text">' + commentText + '</p></div>';
     }
-    document.getElementById('server-content').innerHTML = content;
+    document.getElementById('comment-list').innerHTML = commentContent;
   });
 }
