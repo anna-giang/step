@@ -67,16 +67,38 @@ function fetchComments(quantity) {
   const url = endpoint + queryString.toString();
 
   fetch(url).then(response => response.json()).then((commentData) => {
-    // clear any comment data currently displayed
-    document.getElementById('comment-list').innerHTML = ""
-
-    let commentContent = "";
-    for (let i = 0; i < commentData.length; i++) {
-      let commentText = commentData[i].commentText; // The actual comment
-      let commentAuthor = commentData[i].commentAuthor; // Comment author name
-      commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
-          + '<p class="body-text">' + commentText + '</p></div>';
+    
+    let commentContent = ""
+    
+    if (commentData.length === 0 ) { // if there are no existing comments
+      // disable the delete comments button & display "No Comments"
+      document.getElementById('delete-comments-button').setAttribute('disabled','true');
+      commentContent = '<div class="comment"><p class="body-text">No Comments</p></div>';
     }
+    else { // otherwise display the comments
+      for (let i = 0; i < commentData.length; i++) {
+        let commentText = commentData[i].commentText; // The actual comment
+        let commentAuthor = commentData[i].commentAuthor; // Comment author name
+        commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
+            + '<p class="body-text">' + commentText + '</p></div>';
+      }
+    }
+
     document.getElementById('comment-list').innerHTML = commentContent;
   });
+}
+
+/**
+ * Sends a POST request to servlet at '/delete-data' endpoint
+ * to delete all existing comments, then calls fetchComments()
+ * to refresh the display of comments.
+ * 
+ * @returns none
+ */
+function deleteAllComments() {
+  const request = new Request('/delete-data', {'method': 'POST'});
+  fetch(request).then(response => {
+      fetchComments(0);  
+    }
+  );
 }
