@@ -148,9 +148,9 @@ input {
 /* Comments display */
 
 .comment { 
-    /* This class of items is rendered by fetchComments() in script.js, 
-    where there are existing comments */ 
-    width: 100%;
+  /* This class of items is rendered by fetchComments() in script.js, 
+  where there are existing comments */ 
+  width: 100%;
 }
 
 #comment-display-toggles {
