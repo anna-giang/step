@@ -55,11 +55,13 @@ function toggleBlogPost(buttonId) {
 
 /**
  * Fetches comments JSON from server at /data URL and adds the message to 
- * the div with id "comment-list".
- * @param quantity The number of comments to fetch from the server
+ * the div with id "comment-list". If no comments were returned, adds
+ * "No Comments" message to the div.
+ * @param quantity [OPTIONAL] The number of comments to fetch from the server. 
+ *     Defaults to 5 if not provided.
  * @return none
  */
-function fetchComments(quantity) {
+function fetchComments(quantity=5) {
   
   const endpoint = '/data?';
   var queryString = new URLSearchParams();
@@ -98,7 +100,7 @@ function fetchComments(quantity) {
 function deleteAllComments() {
   const request = new Request('/delete-data', {'method': 'POST'});
   fetch(request).then(response => {
-      fetchComments(0);  
+      fetchComments();  
     }
   );
 }
