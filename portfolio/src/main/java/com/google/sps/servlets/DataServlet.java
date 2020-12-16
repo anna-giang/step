@@ -17,9 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,13 +36,21 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    String queryString = request.getQueryString();
+    HashMap<String,String> fieldValues = getFieldValues(queryString);
+
+    // Limit number of comments fetched from server to numOfComments
+    int numOfComments = Integer.parseInt(fieldValues.get("quantity"));
+    FetchOptions fetchOptions = FetchOptions.Builder.withLimit(numOfComments); 
+    
     Query query = new Query("Comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<HashMap<String, String>> commentList = new ArrayList<HashMap<String, String>>();
 
-    for (Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable(fetchOptions)) {
       // Each comment and the associated data (author, etc.) will be a HashMap, which converts to JSON object
       HashMap<String, String> comment = new HashMap<String, String>();
       String commentText = (String) entity.getProperty("commentText");
@@ -83,5 +91,24 @@ public class DataServlet extends HttpServlet {
     Gson gson = new Gson();
     String json = gson.toJson(list);
     return json;
+  }
+
+  /**
+   * Converts queryString into HashMap of field and value pairs obtained 
+   * from the queryString
+   * @param queryString query string of which the field value pair are to be processed
+   * @return HashMap of field:value mappings
+   */
+  private HashMap<String, String> getFieldValues(String queryString) {
+    String[] fieldValueStr = queryString.split("&");
+    HashMap<String, String> fieldValues = new HashMap<String, String>();
+
+    for (String param : fieldValueStr) {
+      String[] fieldAndValue = param.split("=");
+      String field = fieldAndValue[0];
+      String value = fieldAndValue[1];
+      fieldValues.put(field, value);
+    }
+    return fieldValues;
   }
 }
