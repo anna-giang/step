@@ -60,8 +60,13 @@ function toggleBlogPost(buttonId) {
  * @return none
  */
 function fetchComments(quantity) {
-  var queryString = '/data' + '?quantity=' + String(quantity);
-  fetch(queryString).then(response => response.json()).then((commentData) => {
+  
+  const endpoint = '/data?';
+  var queryString = new URLSearchParams();
+  queryString.append('quantity', String(quantity));
+  const url = endpoint + queryString.toString();
+
+  fetch(url).then(response => response.json()).then((commentData) => {
     // clear any comment data currently displayed
     document.getElementById('comment-list').innerHTML = ""
 
