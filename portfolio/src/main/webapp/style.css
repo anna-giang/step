@@ -130,6 +130,13 @@ button {
   width: 100%;
 }
 
+#req-field-indicator {
+  font-family: inherit;
+  font-size: inherit;
+  color: red;
+  padding-left: 8px;
+}
+
 input {
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
