@@ -35,13 +35,13 @@
           <p class="body-text">A summary of my recent life thus far, in pictures.</p>
         </div>
       </div>
-      <div id="comment-form" class="flex-container">
+      <div id="comment-form-div" class="flex-container">
         <div class="header-div">
           <h2 class="subheading-text">Comments</h2>
           <p class="body-text">Add your thoughts here!</p>
         </div>
         <div class="comment-form-body">
-          <form class="body-text" action="/data" method="POST">
+          <form id="comment-form" class="body-text" action="/data" method="POST">
             <div>
               <label for="comment">Comment<span id="req-field-indicator">*</span></label><br/>
               <input class="long-input" type="text" name="comment" required>
