@@ -145,11 +145,13 @@ input {
 .long-input {
   padding: 2px;
   width: 75%;
+  margin-top: 8px;
 }
 
 .short-input {
   padding: 2px;
   width: 30%;
+  margin-top: 8px;
 }
 
 /* Comments display */
