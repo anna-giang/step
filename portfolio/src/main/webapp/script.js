@@ -107,3 +107,19 @@ function deleteAllComments() {
     }
   );
 }
+
+/**
+ * Fetchs Blobstore upload URL from servlet at '/blobstore-upload-url',
+ * and adds it as the 'action' of the form with id 'comment-form' in index.html.
+ * 
+ * @returns none
+ */
+function getBlobstoreUrl() {
+  const request = new Request('/blobstore-upload-url', {'method': 'GET'});
+  fetch(request).then((response) => {
+      return response.text();
+    }).then((imageUploadUrl) => {
+      const commentForm = document.getElementById('comment-form');
+      commentForm.action = imageUploadUrl;
+    });
+}

@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="script.js"></script>
   </head>
-  <body onload="fetchComments()"> <!-- Default to 5 comments on load -->
+  <!-- onload: fetch 5 comments by default. get blobstore upload URL and add to comment-form -->
+  <body onload="fetchComments();getBlobstoreUrl();">
     <div id="content" class="flex-container">
       <div class="header-div">
         <h1 class="heading-text">My Portfolio</h1>
@@ -41,7 +42,7 @@
           <p class="body-text">Add your thoughts here!</p>
         </div>
         <div class="comment-form-body">
-          <form id="comment-form" class="body-text" action="/data" method="POST">
+          <form id="comment-form" class="body-text" method="POST">
             <div>
               <label for="comment">Comment<span id="req-field-indicator">*</span></label><br/>
               <input class="long-input" type="text" name="comment" required>
