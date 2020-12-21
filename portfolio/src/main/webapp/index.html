@@ -43,8 +43,8 @@
         <div class="comment-form-body">
           <form class="body-text" action="/data" method="POST">
             <div>
-              <label for="comment">Comment</label><br/>
-              <input class="long-input" type="text" name="comment">
+              <label for="comment">Comment<span id="req-field-indicator">*</span></label><br/>
+              <input class="long-input" type="text" name="comment" required>
             </div>
             <div>
               <label for="author-name">Name</label><br/>

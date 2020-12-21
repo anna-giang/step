@@ -80,7 +80,10 @@ function fetchComments(quantity=5) {
     else { // otherwise display the comments
       for (let i = 0; i < commentData.length; i++) {
         let commentText = commentData[i].commentText; // The actual comment
-        let commentAuthor = commentData[i].commentAuthor; // Comment author name
+        
+        // Comment author name: "'Anonymous' if there was not a name submitted."
+        let commentAuthor = commentData[i].commentAuthor === "" ? "Anonymous" : commentData[i].commentAuthor; 
+
         commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
             + '<p class="body-text">' + commentText + '</p></div>';
       }
