@@ -67,8 +67,10 @@ public class DataServlet extends HttpServlet {
       HashMap<String, String> comment = new HashMap<String, String>();
       String commentText = (String) entity.getProperty("commentText");
       String commentAuthor = (String) entity.getProperty("commentAuthor");
+      String imageUrl = (String) entity.getProperty("attachedImage");
       comment.put("commentText", commentText);
       comment.put("commentAuthor", commentAuthor);
+      comment.put("attachedImage", imageUrl); 
       commentList.add(comment);
     }
 
@@ -81,6 +83,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
     // Retrieve the uploaded image's URL from blobstore
+    // If there is no image, imageUrl is none
     String imageUrl = getUploadedFileUrl(request, "image-upload");
 
     // Get input from the form

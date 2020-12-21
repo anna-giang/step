@@ -77,15 +77,23 @@ function fetchComments(quantity=5) {
       document.getElementById('delete-comments-button').setAttribute('disabled','true');
       commentContent = '<div class="comment"><p class="body-text">No Comments</p></div>';
     }
-    else { // otherwise display the comments
+    else { // otherwise display the comments and any attached image
       for (let i = 0; i < commentData.length; i++) {
         let commentText = commentData[i].commentText; // The actual comment
         
         // Comment author name: "'Anonymous' if there was not a name submitted."
         let commentAuthor = commentData[i].commentAuthor === "" ? "Anonymous" : commentData[i].commentAuthor; 
-
-        commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
-            + '<p class="body-text">' + commentText + '</p></div>';
+        
+        // Display image as well, if there is an image
+        let imageUrl = commentData[i].attachedImage;
+        if (imageUrl == null) {
+          commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
+              + '<p class="body-text">' + commentText + '</p></div>';
+        }
+        else {
+          commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
+              + '<p class="body-text">' + commentText + '</p>' + '<a href=' + imageUrl + ' target="_blank"><img src=' + imageUrl + '></a></div>';
+        }
       }
     }
 
