@@ -41,7 +41,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Handles storing and fetching of user comments. 
+ * Linked to <form> element on index.html with id='comment-form' */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
