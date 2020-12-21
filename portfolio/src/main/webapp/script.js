@@ -87,12 +87,14 @@ function fetchComments(quantity=5) {
         // Display image as well, if there is an image
         let imageUrl = commentData[i].attachedImage;
         if (imageUrl == null) {
-          commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
-              + '<p class="body-text">' + commentText + '</p></div>';
+          commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
+              + '<p class="body-text">' + commentText + '</p></div></div>';
         }
         else {
-          commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
-              + '<p class="body-text">' + commentText + '</p>' + '<a href=' + imageUrl + ' target="_blank"><img src=' + imageUrl + '></a></div>';
+          commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' 
+              + commentAuthor + '</b></p>' + '<p class="body-text">' + commentText + '</p></div>' 
+              + '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
+              + imageUrl + '></a></div></div>';
         }
       }
     }
