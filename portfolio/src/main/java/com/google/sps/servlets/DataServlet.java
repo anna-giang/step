@@ -70,9 +70,11 @@ public class DataServlet extends HttpServlet {
       String commentText = (String) entity.getProperty("commentText");
       String commentAuthor = (String) entity.getProperty("commentAuthor");
       String imageUrl = (String) entity.getProperty("attachedImage");
+      String email = (String) entity.getProperty("authorEmail");
       comment.put("commentText", commentText);
       comment.put("commentAuthor", commentAuthor);
       comment.put("attachedImage", imageUrl); 
+      comment.put("authorEmail", email);
       commentList.add(comment);
     }
 
