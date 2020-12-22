@@ -86,19 +86,18 @@ function fetchComments(quantity=5) {
         
         // Display image as well, if there is an image
         let imageUrl = commentData[i].attachedImage;
+        commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
+              + '<p class="body-text">' + commentText + '</p></div>'; // outer <div> not closed yet
+
         if (imageUrl == null) {
-          commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
-              + '<p class="body-text">' + commentText + '</p></div></div>';
+          commentContent += '</div>'; // close outer div
         }
         else {
-          commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' 
-              + commentAuthor + '</b></p>' + '<p class="body-text">' + commentText + '</p></div>' 
-              + '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
-              + imageUrl + '></a></div></div>';
+          commentContent += '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
+              + imageUrl + '></a></div></div>'; // add image
         }
       }
     }
-
     document.getElementById('comment-list').innerHTML = commentContent;
   });
 }
