@@ -81,7 +81,6 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
     // Retrieve the uploaded image's URL from blobstore
     // If there is no image, imageUrl is null
     BlobKey blobKey = getBlobKey(request, "image-upload");
@@ -165,7 +164,6 @@ public class DataServlet extends HttpServlet {
    * @return URL of the uploaded, or none if no image was uploaded
    */
   private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName, BlobKey blobKey) {
-    
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     // User submitted form without selecting a file, so we can't get a URL. (live server)
