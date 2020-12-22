@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -38,6 +41,21 @@ public class DeleteCommentServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    for (Entity entity : results.asIterable()) {
+      // Delete any stored imaged using the BlobKey
+      if (entity.getProperty("imageUrl") != null) {
+        BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+        BlobKey blobKey = new BlobKey((String) entity.getProperty("blobKey"));
+        blobstoreService.delete(blobKey);
+      }
+      Key key = entity.getKey();
+      datastore.delete(key);
+    }
+
+    // Delete the __BlobInfo__ instances
+    query = new Query("__BlobInfo__");
+    results = datastore.prepare(query);
+    
     for (Entity entity : results.asIterable()) {
       Key key = entity.getKey();
       datastore.delete(key);

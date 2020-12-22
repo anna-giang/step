@@ -77,18 +77,27 @@ function fetchComments(quantity=5) {
       document.getElementById('delete-comments-button').setAttribute('disabled','true');
       commentContent = '<div class="comment"><p class="body-text">No Comments</p></div>';
     }
-    else { // otherwise display the comments
+    else { // otherwise display the comments and any attached image
       for (let i = 0; i < commentData.length; i++) {
         let commentText = commentData[i].commentText; // The actual comment
         
         // Comment author name: "'Anonymous' if there was not a name submitted."
         let commentAuthor = commentData[i].commentAuthor === "" ? "Anonymous" : commentData[i].commentAuthor; 
+        
+        // Display image as well, if there is an image
+        let imageUrl = commentData[i].attachedImage;
+        commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
+              + '<p class="body-text">' + commentText + '</p></div>'; // outer <div> not closed yet
 
-        commentContent += '<div class="comment"><p class="body-text"><b>' + commentAuthor + '</b></p>' 
-            + '<p class="body-text">' + commentText + '</p></div>';
+        if (imageUrl == null) {
+          commentContent += '</div>'; // close outer div
+        }
+        else {
+          commentContent += '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
+              + imageUrl + '></a></div></div>'; // add image
+        }
       }
     }
-
     document.getElementById('comment-list').innerHTML = commentContent;
   });
 }
@@ -106,4 +115,20 @@ function deleteAllComments() {
       fetchComments();  
     }
   );
+}
+
+/**
+ * Fetchs Blobstore upload URL from servlet at '/blobstore-upload-url',
+ * and adds it as the 'action' of the form with id 'comment-form' in index.html.
+ * 
+ * @returns none
+ */
+function getBlobstoreUrl() {
+  const request = new Request('/blobstore-upload-url', {'method': 'GET'});
+  fetch(request).then((response) => {
+      return response.text();
+    }).then((imageUploadUrl) => {
+      const commentForm = document.getElementById('comment-form');
+      commentForm.action = imageUploadUrl;
+    });
 }

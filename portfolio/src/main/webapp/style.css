@@ -120,8 +120,8 @@ button {
 
 /* Comment Form */
 
-#comment-form {
-  width: 100%;
+#comment-form-div {
+  width: 75%;
 }
 
 .comment-form-body {
@@ -145,11 +145,13 @@ input {
 .long-input {
   padding: 2px;
   width: 75%;
+  margin-top: 8px;
 }
 
 .short-input {
   padding: 2px;
   width: 30%;
+  margin-top: 8px;
 }
 
 /* Comments display */
@@ -161,7 +163,16 @@ input {
 .comment { 
   /* This class of items is rendered by fetchComments() in script.js, 
   where there are existing comments */ 
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
   width: 100%;
+}
+
+.comment-image {
+  width: 80%;
+  margin-bottom: 4px;
 }
 
 #comment-display-toggles {
