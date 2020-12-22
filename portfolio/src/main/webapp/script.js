@@ -76,8 +76,7 @@ function fetchComments(quantity=5) {
       // disable the delete comments button & display "No Comments"
       document.getElementById('delete-comments-button').setAttribute('disabled','true');
       commentContent = '<div class="comment"><p class="body-text">No Comments</p></div>';
-    }
-    else { // otherwise display the comments and any attached image
+    } else { // otherwise display the comments and any attached image
       for (let i = 0; i < commentData.length; i++) {
         let commentText = commentData[i].commentText; // The actual comment
         
@@ -91,8 +90,7 @@ function fetchComments(quantity=5) {
 
         if (imageUrl == null) {
           commentContent += '</div>'; // close outer div
-        }
-        else {
+        } else {
           commentContent += '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
               + imageUrl + '></a></div></div>'; // add image
         }
@@ -151,8 +149,7 @@ function toggleCommentForm() {
       // Show logout link
       let logoutInstructions = '<p class="body-text">Logout <a href=' + loginStatus.logoutUrl + '>here</a></p>';
       document.getElementById('login-logout-instructions').innerHTML = logoutInstructions;
-    }
-    else {
+    } else {
       // Hide comments form 
       commentForm.style.display = 'none';
       // Show login link
