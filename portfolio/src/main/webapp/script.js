@@ -132,3 +132,32 @@ function getBlobstoreUrl() {
       commentForm.action = imageUploadUrl;
     });
 }
+
+/**
+ * Fetch login status of the user, and toggle the display of the comment form 
+ * and login instructions (in div with id=login-logout-instructions) accordngly.
+ * Note that only logged in users will be able to see the comment form. Users
+ * will be prompted to login or logout accordingly.
+ * @returns none
+ */
+function toggleCommentForm() {
+  const request = new Request('/login-status', {'method': 'GET'});
+  fetch(request).then(response => response.json()).then((loginStatus) => {
+    let commentForm = document.getElementById('comment-form');
+
+    if (loginStatus.loggedIn === 'true') {
+      // Show the comments form 
+      commentForm.style.display = 'block';
+      // Show logout link
+      let logoutInstructions = '<p class="body-text">Logout <a href=' + loginStatus.logoutUrl + '>here</a></p>';
+      document.getElementById('login-logout-instructions').innerHTML = logoutInstructions;
+    }
+    else {
+      // Hide comments form 
+      commentForm.style.display = 'none';
+      // Show login link
+      let loginInstructions = '<p class="body-text">Login <a href=' + loginStatus.loginUrl + '>here</a> to add comments.</p>';
+      document.getElementById('login-logout-instructions').innerHTML = loginInstructions;
+    }
+  });
+}
