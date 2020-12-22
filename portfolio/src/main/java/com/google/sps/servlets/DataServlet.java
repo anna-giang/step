@@ -83,9 +83,12 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
     // Retrieve the uploaded image's URL from blobstore
-    // If there is no image, imageUrl is none
-    String imageUrl = getUploadedFileUrl(request, "image-upload");
-
+    // If there is no image, imageUrl is null
+    BlobKey blobKey = getBlobKey(request, "image-upload");
+    String imageUrl = null;
+    if (blobKey != null) {
+      imageUrl = getUploadedFileUrl(request, "image-upload", blobKey);
+    }
     // Get input from the form
     String commentText = request.getParameter("comment");
     String commentAuthor = request.getParameter("author-name");
@@ -94,7 +97,10 @@ public class DataServlet extends HttpServlet {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("commentText", commentText);
     commentEntity.setProperty("commentAuthor", commentAuthor);
-    commentEntity.setProperty("attachedImage", imageUrl);
+    if (imageUrl != null) {
+      commentEntity.setProperty("attachedImage", imageUrl);
+      commentEntity.setProperty("blobKey", blobKey.getKeyString()); // used to delete image when comment is deleted
+    }
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
 
@@ -132,13 +138,12 @@ public class DataServlet extends HttpServlet {
     return fieldValues;
   }
 
-  /** 
-   * Returns a URL that points to the uploaded file, or null if the user didn't upload a file. 
-   * @param request 
-   * @param formInputElementName
-   * @return URL of the uploaded, or none if no image was uploaded
+  /**
+   * Returns the BlobKey of the stored the uploaded image, or null if there was no uploaded image.
+   * @param request the request sent to the doPost of this servlet
+   * @param formInputElementName the form id of the comment form
    */
-  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
+  private BlobKey getBlobKey(HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get(formInputElementName);
@@ -148,8 +153,20 @@ public class DataServlet extends HttpServlet {
       return null;
     }
 
-    // Our form only contains a single file input, so get the first index.
+    // Our form only contains a single file input, so get the first index and return
     BlobKey blobKey = blobKeys.get(0);
+    return blobKey;
+  }
+
+  /** 
+   * Returns a URL that points to the uploaded file, or null if the user didn't upload a file. 
+   * @param request 
+   * @param formInputElementName
+   * @return URL of the uploaded, or none if no image was uploaded
+   */
+  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName, BlobKey blobKey) {
+    
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     // User submitted form without selecting a file, so we can't get a URL. (live server)
     BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
