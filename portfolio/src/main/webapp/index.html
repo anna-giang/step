@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="script.js"></script>
   </head>
-  <!-- onload: fetch 5 comments by default. get blobstore upload URL and add to comment-form -->
-  <body onload="fetchComments();getBlobstoreUrl();">
+  <!-- onload: check if user is logged in, and hide/show comments form. fetch 5 comments by default. get blobstore upload URL and add to comment-form -->
+  <body onload="toggleCommentForm();fetchComments();getBlobstoreUrl();">
     <div id="content" class="flex-container">
       <div class="header-div">
         <h1 class="heading-text">My Portfolio</h1>
@@ -59,6 +59,9 @@
               <button type="submit">Submit</button>
             </div>
           </form>
+        </div>
+        <div id="login-logout-instructions">
+          <!-- login/logout link here -->
         </div>
       </div>
       <div id="comment-display-toggles" class="flex-container">

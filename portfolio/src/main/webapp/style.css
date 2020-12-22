@@ -124,10 +124,16 @@ button {
   width: 75%;
 }
 
+/* div containing the comment form */
 .comment-form-body {
   margin-bottom: 8px;
   margin-top: 8px;
   width: 100%;
+}
+
+/* actual comment form */
+#comment-form {
+  display: none; /* hide form by default, unless user is logged in */
 }
 
 #req-field-indicator {

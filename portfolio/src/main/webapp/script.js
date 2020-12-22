@@ -76,8 +76,7 @@ function fetchComments(quantity=5) {
       // disable the delete comments button & display "No Comments"
       document.getElementById('delete-comments-button').setAttribute('disabled','true');
       commentContent = '<div class="comment"><p class="body-text">No Comments</p></div>';
-    }
-    else { // otherwise display the comments and any attached image
+    } else { // otherwise display the comments and any attached image
       for (let i = 0; i < commentData.length; i++) {
         let commentText = commentData[i].commentText; // The actual comment
         
@@ -91,8 +90,7 @@ function fetchComments(quantity=5) {
 
         if (imageUrl == null) {
           commentContent += '</div>'; // close outer div
-        }
-        else {
+        } else {
           commentContent += '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
               + imageUrl + '></a></div></div>'; // add image
         }
@@ -131,4 +129,32 @@ function getBlobstoreUrl() {
       const commentForm = document.getElementById('comment-form');
       commentForm.action = imageUploadUrl;
     });
+}
+
+/**
+ * Fetch login status of the user, and toggle the display of the comment form 
+ * and login instructions (in div with id=login-logout-instructions) accordngly.
+ * Note that only logged in users will be able to see the comment form. Users
+ * will be prompted to login or logout accordingly.
+ * @returns none
+ */
+function toggleCommentForm() {
+  const request = new Request('/login-status', {'method': 'GET'});
+  fetch(request).then(response => response.json()).then((loginStatus) => {
+    let commentForm = document.getElementById('comment-form');
+
+    if (loginStatus.loggedIn === 'true') {
+      // Show the comments form 
+      commentForm.style.display = 'block';
+      // Show logout link
+      let logoutInstructions = '<p class="body-text">Logout <a href=' + loginStatus.logoutUrl + '>here</a></p>';
+      document.getElementById('login-logout-instructions').innerHTML = logoutInstructions;
+    } else {
+      // Hide comments form 
+      commentForm.style.display = 'none';
+      // Show login link
+      let loginInstructions = '<p class="body-text">Login <a href=' + loginStatus.loginUrl + '>here</a> to add comments.</p>';
+      document.getElementById('login-logout-instructions').innerHTML = loginInstructions;
+    }
+  });
 }
