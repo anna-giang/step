@@ -28,6 +28,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -92,10 +94,16 @@ public class DataServlet extends HttpServlet {
     String commentText = request.getParameter("comment");
     String commentAuthor = request.getParameter("author-name");
 
+    // Get the user email and store with their comment
+    // NOTE do not need to check login status, because only logged in users can access comment form
+    UserService userService = UserServiceFactory.getUserService();
+    String email = userService.getCurrentUser().getEmail();
+
     // Store in DataStore
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("commentText", commentText);
     commentEntity.setProperty("commentAuthor", commentAuthor);
+    commentEntity.setProperty("authorEmail", email);
     if (imageUrl != null) {
       commentEntity.setProperty("attachedImage", imageUrl);
       commentEntity.setProperty("blobKey", blobKey.getKeyString()); // used to delete image when comment is deleted
