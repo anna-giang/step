@@ -46,7 +46,7 @@ public class LoginStatusServlet extends HttpServlet {
       String loginRedirectUrl = "/index.html";
       String loginUrl = userService.createLoginURL(loginRedirectUrl);
       userData.put("loggedIn", "false");
-      userData.put("logoutUrl", loginUrl);
+      userData.put("loginUrl", loginUrl);
     }
     
     // Convert to JSON and return
