@@ -36,12 +36,10 @@ public class LoginStatusServlet extends HttpServlet {
     HashMap<String, String> userData = new HashMap<String, String>();
 
     if (userService.isUserLoggedIn()) {
-      
       String logoutRedirectUrl = "/index.html";
       String logoutUrl = userService.createLogoutURL(logoutRedirectUrl);
       userData.put("loggedIn", "true");
       userData.put("logoutUrl", logoutUrl);
-      
     } else {
       String loginRedirectUrl = "/index.html";
       String loginUrl = userService.createLoginURL(loginRedirectUrl);
