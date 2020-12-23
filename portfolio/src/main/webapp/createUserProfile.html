@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Set up profile</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <div id="content" class="flex-container">
+      <div class="header-div">
+        <h1 class="heading-text">Create Profile</h1>
+      </div>
+      <div class="user-nickname-form-div">
+        <h2 class="subheading-text">Set my nickname</h2>
+        <form id="user-nickname-form" class="body-text" method="POST" action='/nickname'>
+          <div>
+            <label for="nickname">Nickname</label><br/>
+            <input class="long-input" type="text" name="nickname">
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
