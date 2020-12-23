@@ -28,10 +28,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Fetch and set the user nickname */
+/** Checks whether user has set a nickname (GET requests), and faciliates the 
+ * setting the user nickname (POST requests) */
 @WebServlet("/nickname")
 public class NicknameServlet extends HttpServlet {
   
+  /** Checks whether user has set a nickname previously. Directs user to /createUserProfile.html to
+   * set their nickname, otherwise redirects back to /index.html */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
@@ -52,7 +55,7 @@ public class NicknameServlet extends HttpServlet {
     response.sendRedirect("/index.html");
   }
 
-  /** Sets a nickname for the user */
+  /** Sets user nickname */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
