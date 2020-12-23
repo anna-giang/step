@@ -94,23 +94,26 @@ public class DataServlet extends HttpServlet {
     }
     // Get input from the form
     String commentText = request.getParameter("comment");
-    String commentAuthor = request.getParameter("author-name");
 
     // Get the user email and store with their comment
     // NOTE do not need to check login status, because only logged in users can access comment form
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
 
+    // Get user nickname and store with their comment
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    String nickname = getUserNickname(userService.getCurrentUser().getUserId());
+
     // Store in DataStore
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("commentText", commentText);
-    commentEntity.setProperty("commentAuthor", commentAuthor);
+    commentEntity.setProperty("commentAuthor", nickname);
     commentEntity.setProperty("authorEmail", email);
     if (imageUrl != null) {
       commentEntity.setProperty("attachedImage", imageUrl);
       commentEntity.setProperty("blobKey", blobKey.getKeyString()); // used to delete image when comment is deleted
     }
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
     datastore.put(commentEntity);
 
     // Redirect back to the HTML page.
@@ -195,5 +198,23 @@ public class DataServlet extends HttpServlet {
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
     }
+  }
+
+  /** Returns the nickname of the user with id, or null if the user has not 
+   * set a nickname. 
+   * @param id user id of the user.
+   */
+  private String getUserNickname(String id) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = 
+        new Query("UserInfo")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+    if (entity == null) {
+      return null;
+    }
+    String nickname = (String) entity.getProperty("nickname");
+    return nickname;
   }
 }
