@@ -143,6 +143,10 @@ button {
   padding-left: 8px;
 }
 
+.form-field {
+  margin-top: 10px;
+}
+
 input {
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
