@@ -70,10 +70,12 @@ public class DataServlet extends HttpServlet {
       String commentText = (String) entity.getProperty("commentText");
       String commentAuthor = (String) entity.getProperty("commentAuthor");
       String imageUrl = (String) entity.getProperty("attachedImage");
+      String showEmail = (String) entity.getProperty("showEmail");
       String email = (String) entity.getProperty("authorEmail");
       comment.put("commentText", commentText);
       comment.put("commentAuthor", commentAuthor);
       comment.put("attachedImage", imageUrl); 
+      comment.put("showEmail", showEmail);
       comment.put("authorEmail", email);
       commentList.add(comment);
     }
@@ -94,6 +96,7 @@ public class DataServlet extends HttpServlet {
     }
     // Get input from the form
     String commentText = request.getParameter("comment");
+    String showEmail = request.getParameter("show-email");
 
     // Get the user email and store with their comment
     // NOTE do not need to check login status, because only logged in users can access comment form
@@ -109,6 +112,7 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("commentText", commentText);
     commentEntity.setProperty("commentAuthor", nickname);
     commentEntity.setProperty("authorEmail", email);
+    commentEntity.setProperty("showEmail", showEmail);
     if (imageUrl != null) {
       commentEntity.setProperty("attachedImage", imageUrl);
       commentEntity.setProperty("blobKey", blobKey.getKeyString()); // used to delete image when comment is deleted
