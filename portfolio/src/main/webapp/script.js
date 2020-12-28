@@ -75,6 +75,8 @@ function fetchComments(quantity=5) {
       // disable the delete comments button & display "No Comments"
       document.getElementById('delete-comments-button').setAttribute('disabled','true');
       commentContent = '<div class="comment"><p class="body-text">No Comments</p></div>';
+      document.getElementById('comment-list').innerHTML = commentContent;
+
     } else { // otherwise display the comments and any attached image
       for (let i = 0; i < commentData.length; i++) {
         let commentText = commentData[i].commentText; // The actual comment
@@ -91,20 +93,24 @@ function fetchComments(quantity=5) {
         }
 
         // Display image as well, if there is an image
-        let imageUrl = commentData[i].attachedImage;
-        commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>'
-            + authorEmailContent
-            + '<p class="body-text">' + commentText + '</p></div>'; // outer <div> not closed yet
+        let blobKey = commentData[i].blobKey;
+        fetchCommentImage(blobKey).then((url) => {
+          let imageUrl = url;
 
-        if (imageUrl == null) {
-          commentContent += '</div>'; // close outer div
-        } else {
-          commentContent += '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
-              + imageUrl + '></a></div></div>'; // add image
-        }
+          commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>'
+              + authorEmailContent
+              + '<p class="body-text">' + commentText + '</p></div>'; // outer <div> not closed yet
+
+          if (imageUrl == null) {
+            commentContent += '</div>'; // close outer div
+          } else {
+            commentContent += '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
+                + imageUrl + '></a></div></div>'; // add image
+          }
+          document.getElementById('comment-list').innerHTML = commentContent;
+        });
       }
     }
-    document.getElementById('comment-list').innerHTML = commentContent;
   });
 }
 
@@ -165,4 +171,23 @@ function toggleCommentForm() {
       document.getElementById('login-logout-instructions').innerHTML = loginInstructions;
     }
   });
+}
+
+/** Sends a GET request to the server at '/serve-images' URL
+ * to retreive image submitted with comment, if any.
+ * @param blobKey the string that is the BlobKey (blobstore key) of 
+ *     the stored image blob
+ * @returns a URL string that is the URL of the stored image, or null if 
+ *     blobKey is null or undefined if image is not found
+ */
+async function fetchCommentImage(blobKey) {
+  if (blobKey == null) {
+    return null;
+  }
+  const response = await fetch(`/serve-images?blob-key=${blobKey}`);
+  // parse the body of the response as a Blob.
+  const blob = await response.blob();
+  // create a URL for accessing the Blob.
+  const imageURL = window.URL.createObjectURL(blob);
+  return imageURL; 
 }

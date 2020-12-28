@@ -14,8 +14,6 @@
 
 package com.google.sps.servlets;
 
-import com.google.appengine.api.blobstore.BlobInfo;
-import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -25,16 +23,11 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Nickname;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +63,7 @@ public class DataServlet extends HttpServlet {
       HashMap<String, Object> comment = new HashMap<String, Object>();
       String commentText = (String) entity.getProperty("commentText");
       String commentAuthor = (String) entity.getProperty("commentAuthor");
-      String imageUrl = (String) entity.getProperty("attachedImage");
+      String blobKey = (String) entity.getProperty("blobKey");
       Boolean showEmail = (Boolean) entity.getProperty("showEmail");
       if (showEmail) {
         String email = (String) entity.getProperty("authorEmail");
@@ -78,7 +71,7 @@ public class DataServlet extends HttpServlet {
       }
       comment.put("commentText", commentText);
       comment.put("commentAuthor", commentAuthor);
-      comment.put("attachedImage", imageUrl); 
+      comment.put("blobKey", blobKey);
       comment.put("showEmail", showEmail);
       commentList.add(comment);
     }
@@ -90,13 +83,9 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Retrieve the uploaded image's URL from blobstore
-    // If there is no image, imageUrl is null
+    // Retrieve the uploaded image blobkey
     BlobKey blobKey = getBlobKey(request, "image-upload");
-    String imageUrl = null;
-    if (blobKey != null) {
-      imageUrl = getUploadedFileUrl(request, "image-upload", blobKey);
-    }
+
     // Get input from the form
     String commentText = request.getParameter("comment");
     Boolean showEmail = Boolean.parseBoolean(request.getParameter("show-email"));
@@ -116,9 +105,8 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("commentAuthor", nickname);
     commentEntity.setProperty("authorEmail", email);
     commentEntity.setProperty("showEmail", showEmail);
-    if (imageUrl != null) {
-      commentEntity.setProperty("attachedImage", imageUrl);
-      commentEntity.setProperty("blobKey", blobKey.getKeyString()); // used to delete image when comment is deleted
+    if (blobKey != null) {
+      commentEntity.setProperty("blobKey", blobKey.getKeyString()); 
     }
     
     datastore.put(commentEntity);
@@ -167,7 +155,7 @@ public class DataServlet extends HttpServlet {
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get(formInputElementName);
 
-    // User submitted form without selecting a file, so we can't get a URL. (dev server)
+    // User submitted form without selecting a file
     if (blobKeys == null || blobKeys.isEmpty()) {
       return null;
     }
@@ -175,35 +163,5 @@ public class DataServlet extends HttpServlet {
     // Our form only contains a single file input, so get the first index and return
     BlobKey blobKey = blobKeys.get(0);
     return blobKey;
-  }
-
-  /** 
-   * Returns a URL that points to the uploaded file, or null if the user didn't upload a file. 
-   * @param request 
-   * @param formInputElementName
-   * @return URL of the uploaded, or none if no image was uploaded
-   */
-  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName, BlobKey blobKey) {
-    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-
-    // User submitted form without selecting a file, so we can't get a URL. (live server)
-    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
-    if (blobInfo.getSize() == 0) {
-      blobstoreService.delete(blobKey);
-      return null;
-    }
-
-    // Use ImagesService to get a URL that points to the uploaded file.
-    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-    ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
-
-    // To support running in Google Cloud Shell with AppEngine's devserver, we must use the relative
-    // path to the image, rather than the path returned by imagesService which contains a host.
-    try {
-      URL url = new URL(imagesService.getServingUrl(options));
-      return url.getPath();
-    } catch (MalformedURLException e) {
-      return imagesService.getServingUrl(options);
-    }
   }
 }
