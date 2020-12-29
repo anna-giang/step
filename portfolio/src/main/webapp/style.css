@@ -181,8 +181,8 @@ input {
 }
 
 .comment-image {
-  width: 80%;
   margin-bottom: 4px;
+  width: 60%;
 }
 
 #comment-display-toggles {
