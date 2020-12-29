@@ -31,6 +31,7 @@ import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
+import com.google.sps.data.Nickname;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -105,7 +106,7 @@ public class DataServlet extends HttpServlet {
 
     // Get user nickname and store with their comment
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    String nickname = getUserNickname(userService.getCurrentUser().getUserId());
+    String nickname = Nickname.getUserNickname(userService.getCurrentUser().getUserId());
 
     // Store in DataStore
     Entity commentEntity = new Entity("Comment");
@@ -202,23 +203,5 @@ public class DataServlet extends HttpServlet {
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
     }
-  }
-
-  /** Returns the nickname of the user with id, or null if the user has not 
-   * set a nickname. 
-   * @param id user id of the user.
-   */
-  private String getUserNickname(String id) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = 
-        new Query("UserInfo")
-            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
-    PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
-    if (entity == null) {
-      return null;
-    }
-    String nickname = (String) entity.getProperty("nickname");
-    return nickname;
   }
 }
