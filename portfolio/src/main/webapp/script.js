@@ -69,8 +69,7 @@ function fetchComments(quantity=5) {
   const url = endpoint + queryString.toString();
 
   fetch(url).then(response => response.json()).then((commentData) => {
-    
-    let commentContent = ""
+    let commentContent = "";
     
     if (commentData.length === 0 ) { // if there are no existing comments
       // disable the delete comments button & display "No Comments"
@@ -85,7 +84,7 @@ function fetchComments(quantity=5) {
         
         let authorEmailContent = "";
         // Show email if the user said so
-        if (commentData[i].showEmail != null) {
+        if (commentData[i].showEmail == 'true') {
           // 'No email provided' if comment had been submitted before implementation of authentication
           let authorEmail = commentData[i].authorEmail === "" ? "No email provided" : commentData[i].authorEmail;
           authorEmailContent = '<p class="footnote-text"> ' + authorEmail + '</p>';
