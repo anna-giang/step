@@ -20,55 +20,90 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 public final class FindMeetingQuery {
-  
   /**
    * Given a Collection of all known events and a meeting request, returns the TimeRanges where
    * the meeting can occur.
    * 
    * Algorithm:
-   * 1. Going through all the events, add events that involve meeting attendees to an ArrayList, eventList
+   * 1. Going through all the events, add events that involve meeting attendees (both optional and 
+   * mandatory) to an ArrayList, eventList.
    * 2. Sort eventList according to event start times
    * 3. Merge adjacent events if they overlap
    * 4. Going through the merged events list, add the gaps between events that are longer or 
    * equal to meeting duration to output
+   * 5. If there are no meeting times, remove optional attendees, and repeat steps 1-4.
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
-    ArrayList<Event> eventList = new ArrayList<>();
     ArrayList<TimeRange> meetingTimes = new ArrayList<TimeRange>();
 
     // EDGE CASE: No meetingTimes available for meetings longer than 1 day
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
       return meetingTimes;
     }
-
-    // Only care about events of people that are attendees of the meeting
+    
+    /* FILTER ALL EVENTS BY ATTENDEES */
+    // Initially consider both mandatory and optional attendees
     HashSet<String> meetingAttendees = new HashSet<String>(request.getAttendees());
+    meetingAttendees.addAll(request.getOptionalAttendees());
+    ArrayList<Event> eventList = filterEventsByAttendees(events, meetingAttendees);
+
+    /* SORT EVENTS BY START TIME */ 
+    Comparator<Event> compareByStartTime = 
+        (Event event1, Event event2) -> Integer.compare(event1.getWhen().start(), event2.getWhen().start());
+    eventList.sort(compareByStartTime);
+
+    /* MERGE ANY OVERLAPPING EVENTS */ 
+    ArrayList<TimeRange> mergedEventTimes = mergeOverlappingEvents(eventList);
+    
+    /* RETURN ALL THE BLOCKS OF AVAILABILITY */
+    meetingTimes = findAvailability(mergedEventTimes, request.getDuration());
+
+    // If at this point there are no possible meeting times, try removing optional guests
+    // and repeat the process.
+    if (meetingTimes.isEmpty()) {
+      meetingAttendees.removeAll(request.getOptionalAttendees());
+      eventList = filterEventsByAttendees(events, meetingAttendees);
+      eventList.sort(compareByStartTime);
+      mergedEventTimes = mergeOverlappingEvents(eventList);
+      meetingTimes = findAvailability(mergedEventTimes, request.getDuration());
+    }
+    return meetingTimes;
+  }
+
+  /**
+   * Returns the subset of events in which the attendees provided are attending.
+   * @param events the collection of Event objects to be filtered
+   * @param attendees the attendees to filter the Event objects by
+   */
+  private ArrayList<Event> filterEventsByAttendees(Collection<Event> events, Collection<String> attendees) {
+    ArrayList<Event> eventList = new ArrayList<>();
     for (Event event : events) {
       HashSet<String> eventAttendees = new HashSet<String>(event.getAttendees());
-      HashSet<String> combinedAttendees = new HashSet<String>(meetingAttendees);
+      HashSet<String> combinedAttendees = new HashSet<String>(attendees);
       combinedAttendees.retainAll(eventAttendees);
       if (!combinedAttendees.isEmpty()) {
         eventList.add(event);
       }
     }
+    return eventList;
+  }
 
-    // EDGE CASE: The whole day is free if there were no events
-    if (eventList.size() == 0) {
-      meetingTimes.add(TimeRange.WHOLE_DAY);
-      return meetingTimes;
+  /**
+   * Merges overlapping events and returns the ArrayList of TimeRanges representing the
+   * time blocks where events take place in chronological order.
+   * @param eventList the ArrayList of events sorted in chronological order by start time
+   * @return the ArrayList of TimeRanges representing the time blocks where events occur
+   */
+  private ArrayList<TimeRange> mergeOverlappingEvents(ArrayList<Event> eventList) {
+    ArrayList<TimeRange> mergedEventTimes = new ArrayList<>();
+    
+    if (eventList.isEmpty()) {
+      return mergedEventTimes;
     }
 
-    /* SORT EVENTS BY START TIME */ 
-    Comparator<Event> compareByStartTime = 
-        (Event event1, Event event2) -> Integer.compare(event1.getWhen().start(), event2.getWhen().start());
-    
-    eventList.sort(compareByStartTime);
-
-    /* MERGE ANY OVERLAPPING EVENTS */ 
-    ArrayList<TimeRange> mergedEventTimes = new ArrayList<>();
     mergedEventTimes.add(eventList.get(0).getWhen());
-    
+
     for (int i = 1; i < eventList.size(); i++) {
       // For two adjacent events, check if they overlap
       TimeRange lastTimeRange = mergedEventTimes.get(mergedEventTimes.size() - 1);
@@ -86,31 +121,48 @@ public final class FindMeetingQuery {
         mergedEventTimes.add(currEventTime);
       }
     }
+    return mergedEventTimes;
+  }
 
-    /* RETURN ALL THE BLOCKS OF AVAILABILITY */
+  /**
+   * Given a sorted list of TimeRanges where events take place, return a list of the availability
+   * (no event) times from the start of the day (00:00) to the end of the day (23:59) that are 
+   * at least of the given duration.
+   * @param eventTimes the sorted list of TimeRanges that represent the time periods in the day
+   *     when events take place
+   * @param duration the minimum length of the period of availability 
+   */
+  private ArrayList<TimeRange> findAvailability(ArrayList<TimeRange> eventTimes, long duration) {
+    
+    ArrayList<TimeRange> availability = new ArrayList<TimeRange>();
+    
+    // If there are no meetings, then the whole day is free
+    if (eventTimes.isEmpty()) {
+      availability.add(TimeRange.WHOLE_DAY);
+      return availability;
+    }
 
     // Start at the beginning of the day
     int timeslotStart = TimeRange.START_OF_DAY;
 
-    for (int i = 0; i < mergedEventTimes.size(); i++) {
+    for (int i = 0; i < eventTimes.size(); i++) {
       // If the gap between timeSlotstart and the start of the next event is >= meeting duration,
-      // add to meetingTimes
-      TimeRange currEvent = mergedEventTimes.get(i);
-      if (currEvent.start() - timeslotStart >= request.getDuration()) {
+      // add to availability
+      TimeRange currEvent = eventTimes.get(i);
+      if (currEvent.start() - timeslotStart >= duration) {
         TimeRange timeslot = TimeRange.fromStartEnd(timeslotStart, currEvent.start(), false);
-        meetingTimes.add(timeslot);
+        availability.add(timeslot);
       }
       // the next potential meeting time will start from the end of the current event
       timeslotStart = currEvent.end();
     }
 
     // Finally, add the timeslot from the end of the last event to the end of the day
-    TimeRange lastEvent = mergedEventTimes.get(mergedEventTimes.size() - 1);
-    if (TimeRange.END_OF_DAY - lastEvent.end() >= request.getDuration()) {
+    TimeRange lastEvent = eventTimes.get(eventTimes.size() - 1);
+    if (TimeRange.END_OF_DAY - lastEvent.end() >= duration) {
       TimeRange timeslot = TimeRange.fromStartEnd(lastEvent.end(), TimeRange.END_OF_DAY, true);
-      meetingTimes.add(timeslot);
-    } 
-
-    return meetingTimes;
+      availability.add(timeslot);
+    }
+    return availability;
   }
 }
