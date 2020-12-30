@@ -70,7 +70,7 @@ function fetchComments(quantity=5) {
 
   fetch(url).then(response => response.json()).then((commentData) => {
     let commentContent = "";
-    
+
     if (commentData.length === 0 ) { // if there are no existing comments
       // disable the delete comments button & display "No Comments"
       document.getElementById('delete-comments-button').setAttribute('disabled','true');
@@ -99,8 +99,10 @@ function fetchComments(quantity=5) {
               + authorEmailContent
               + '<p class="body-text">' + commentText + '</p></div>'; // outer <div> not closed yet
 
-          if (imageUrl == null) {
+          if (imageUrl === null) { // No image
             commentContent += '</div>'; // close outer div
+          } else if (imageUrl === undefined) { // Error occured
+            commentContent += '<div class="body-text">Error fetching image</div></div>';
           } else {
             commentContent += '<div class="flex-item"><a href=' + imageUrl + ' target="_blank"><img class="comment-image" src=' 
                 + imageUrl + '></a></div></div>'; // add image
@@ -183,9 +185,16 @@ async function fetchCommentImage(blobKey) {
     return null;
   }
   const response = await fetch(`/serve-images?blob-key=${blobKey}`);
-  // parse the body of the response as a Blob.
-  const blob = await response.blob();
-  // create a URL for accessing the Blob.
-  const imageURL = window.URL.createObjectURL(blob);
-  return imageURL; 
+  // check that response was successful
+  if (response.ok) {
+    // parse the body of the response as a Blob.
+    const blob = await response.blob();
+    // create a URL for accessing the Blob.
+    const imageURL = window.URL.createObjectURL(blob);
+    return imageURL; 
+  }
+  else {
+    console.log("Error fetching image: " + response.status + " " + response.statusText);
+    return undefined;
+  }
 }

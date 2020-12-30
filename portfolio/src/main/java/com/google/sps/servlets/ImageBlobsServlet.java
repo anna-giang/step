@@ -32,7 +32,12 @@ public class ImageBlobsServlet extends HttpServlet {
     if (queryString == null) {
       return;
     }
-    BlobKey blobKey = new BlobKey(request.getParameter("blob-key"));
+    String blobKeyString = request.getParameter("blob-key");
+    // If there is no blob-key
+    if (blobKeyString == null) {
+      return;
+    }
+    BlobKey blobKey = new BlobKey(blobKeyString);
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     blobstoreService.serve(blobKey, response);
   }
