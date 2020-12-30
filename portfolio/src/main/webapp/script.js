@@ -94,9 +94,7 @@ function fetchComments(quantity=5) {
 
         // Display image as well, if there is an image
         let blobKey = commentData[i].blobKey;
-        fetchCommentImage(blobKey).then((url) => {
-          let imageUrl = url;
-
+        fetchCommentImage(blobKey).then((imageUrl) => {
           commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>'
               + authorEmailContent
               + '<p class="body-text">' + commentText + '</p></div>'; // outer <div> not closed yet
