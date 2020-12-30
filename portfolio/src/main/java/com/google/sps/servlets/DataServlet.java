@@ -56,23 +56,23 @@ public class DataServlet extends HttpServlet {
     HashMap<String,String> fieldValues = getFieldValues(queryString);
 
     // Limit number of comments fetched from server to numOfComments
-    int numOfComments = Integer.parseInt(fieldValues.get("quantity"));
+    int numOfComments = Integer.parseInt((String) fieldValues.get("quantity"));
     FetchOptions fetchOptions = FetchOptions.Builder.withLimit(numOfComments); 
     
     Query query = new Query("Comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<HashMap<String, String>> commentList = new ArrayList<HashMap<String, String>>();
+    List<HashMap<String, Object>> commentList = new ArrayList<HashMap<String, Object>>();
 
     for (Entity entity : results.asIterable(fetchOptions)) {
       // Each comment and the associated data (author, etc.) will be a HashMap, which converts to JSON object
-      HashMap<String, String> comment = new HashMap<String, String>();
+      HashMap<String, Object> comment = new HashMap<String, Object>();
       String commentText = (String) entity.getProperty("commentText");
       String commentAuthor = (String) entity.getProperty("commentAuthor");
       String imageUrl = (String) entity.getProperty("attachedImage");
-      String showEmail = (String) entity.getProperty("showEmail");
-      if (Boolean.parseBoolean(showEmail) == true) {
+      Boolean showEmail = (Boolean) entity.getProperty("showEmail");
+      if (showEmail) {
         String email = (String) entity.getProperty("authorEmail");
         comment.put("authorEmail", email);
       }
@@ -99,7 +99,7 @@ public class DataServlet extends HttpServlet {
     }
     // Get input from the form
     String commentText = request.getParameter("comment");
-    String showEmail = request.getParameter("show-email");
+    Boolean showEmail = Boolean.parseBoolean(request.getParameter("show-email"));
 
     // Get the user email and store with their comment
     // NOTE do not need to check login status, because only logged in users can access comment form
@@ -132,7 +132,7 @@ public class DataServlet extends HttpServlet {
    * @param list the List of HashMap<String, String> to be converted to JSON
    * @return a JSON String with the ArrayList contents.
    */
-  private String convertToJson(List<HashMap<String, String>> list) {
+  private String convertToJson(List<HashMap<String, Object>> list) {
     Gson gson = new Gson();
     String json = gson.toJson(list);
     return json;

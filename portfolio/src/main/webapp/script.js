@@ -84,7 +84,7 @@ function fetchComments(quantity=5) {
         
         let authorEmailContent = "";
         // Show email if the user said so
-        if (commentData[i].showEmail == 'true') {
+        if (commentData[i].showEmail == true) {
           // 'No email provided' if comment had been submitted before implementation of authentication
           let authorEmail = commentData[i].authorEmail === "" ? "No email provided" : commentData[i].authorEmail;
           authorEmailContent = '<p class="footnote-text"> ' + authorEmail + '</p>';
