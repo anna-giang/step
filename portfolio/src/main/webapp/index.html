@@ -43,17 +43,17 @@
         </div>
         <div class="comment-form-body">
           <form id="comment-form" class="body-text" method="POST" enctype="multipart/form-data">
-            <div>
+            <div class="form-field">
               <label for="comment">Comment<span id="req-field-indicator">*</span></label><br/>
               <input class="long-input" type="text" name="comment" required>
             </div>
-            <div>
-              <label for="author-name">Name</label><br/>
-              <input class="short-input" type="text" name="author-name">
-            </div>
-            <div>
+            <div class="form-field">
               <label for="image-upload">Upload an image</label><br/>
               <input class="short-input" type="file" name="image-upload">
+            </div>
+            <div class="form-field">
+              <input type="checkbox" id="show-email" name="show-email" value="true">
+              <label for="show-email">Show my email in my comment</label><br>
             </div>
             <div>
               <button type="submit">Submit</button>

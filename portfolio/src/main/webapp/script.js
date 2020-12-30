@@ -69,8 +69,7 @@ function fetchComments(quantity=5) {
   const url = endpoint + queryString.toString();
 
   fetch(url).then(response => response.json()).then((commentData) => {
-    
-    let commentContent = ""
+    let commentContent = "";
     
     if (commentData.length === 0 ) { // if there are no existing comments
       // disable the delete comments button & display "No Comments"
@@ -82,14 +81,19 @@ function fetchComments(quantity=5) {
         
         // Comment author name: "'Anonymous' if there was not a name submitted."
         let commentAuthor = commentData[i].commentAuthor === "" ? "Anonymous" : commentData[i].commentAuthor; 
-
-        // 'No email provided' if comment had been submitted before implementation of authentication
-        let authorEmail = commentData[i].authorEmail === "" ? "No email provided" : commentData[i].authorEmail;
+        
+        let authorEmailContent = "";
+        // Show email if the user said so
+        if (commentData[i].showEmail == true) {
+          // 'No email provided' if comment had been submitted before implementation of authentication
+          let authorEmail = commentData[i].authorEmail === "" ? "No email provided" : commentData[i].authorEmail;
+          authorEmailContent = '<p class="footnote-text"> ' + authorEmail + '</p>';
+        }
 
         // Display image as well, if there is an image
         let imageUrl = commentData[i].attachedImage;
         commentContent += '<div class="comment"><div class="flex-item"><p class="body-text"><b>' + commentAuthor + '</b></p>'
-            + '<p class="footnote-text"> ' + authorEmail + '</p>'
+            + authorEmailContent
             + '<p class="body-text">' + commentText + '</p></div>'; // outer <div> not closed yet
 
         if (imageUrl == null) {
