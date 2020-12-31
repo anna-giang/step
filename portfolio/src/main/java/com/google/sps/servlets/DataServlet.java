@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -29,7 +31,9 @@ import com.google.gson.Gson;
 import com.google.sps.data.Nickname;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.annotation.WebServlet;
@@ -160,8 +164,21 @@ public class DataServlet extends HttpServlet {
       return null;
     }
 
-    // Our form only contains a single file input, so get the first index and return
+    // Our form only contains a single file input, so get the first index
     BlobKey blobKey = blobKeys.get(0);
-    return blobKey;
+
+    // Check that the user actually uploaded an image
+    final BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+    long size = blobInfo.getSize();
+    String type = blobInfo.getContentType();
+    // supported upload file types
+    HashSet<String> filetypes = new HashSet<String>();
+    filetypes.addAll(Arrays.asList("image/jpeg", "image/jpg", "image/png"));
+    if (size > 0 && filetypes.contains(type)) {
+      return blobKey;
+    } else {
+      blobstoreService.delete(blobKey);
+      return null;
+    }
   }
 }
