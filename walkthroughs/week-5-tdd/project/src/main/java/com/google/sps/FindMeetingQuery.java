@@ -136,15 +136,8 @@ public final class FindMeetingQuery {
    *     that are at least of the given duration
    */
   private ArrayList<TimeRange> findAvailability(ArrayList<TimeRange> eventTimes, long duration) {
-    
     ArrayList<TimeRange> availability = new ArrayList<TimeRange>();
     
-    // If there are no meetings, then the whole day is free
-    if (eventTimes.isEmpty()) {
-      availability.add(TimeRange.WHOLE_DAY);
-      return availability;
-    }
-
     // Start at the beginning of the day
     int timeslotStart = TimeRange.START_OF_DAY;
 
@@ -161,9 +154,9 @@ public final class FindMeetingQuery {
     }
 
     // Finally, add the timeslot from the end of the last event to the end of the day
-    TimeRange lastEvent = eventTimes.get(eventTimes.size() - 1);
-    if (TimeRange.END_OF_DAY - lastEvent.end() >= duration) {
-      TimeRange timeslot = TimeRange.fromStartEnd(lastEvent.end(), TimeRange.END_OF_DAY, true);
+    // timeslotStart will be set to the end of the last event OR the start of the day if no events
+    if (TimeRange.END_OF_DAY - timeslotStart >= duration) {
+      TimeRange timeslot = TimeRange.fromStartEnd(timeslotStart, TimeRange.END_OF_DAY, true);
       availability.add(timeslot);
     }
     return availability;
