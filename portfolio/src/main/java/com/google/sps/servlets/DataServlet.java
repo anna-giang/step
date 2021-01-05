@@ -45,6 +45,9 @@ import javax.servlet.http.HttpServletResponse;
  * Linked to <form> element on index.html with id='comment-form' */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  // Supported upload file types of the comment form
+  private final HashSet<String> FILETYPES = new HashSet<String>(
+      Arrays.asList("image/jpeg", "image/jpg", "image/png"));
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -171,10 +174,7 @@ public class DataServlet extends HttpServlet {
     final BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
     long size = blobInfo.getSize();
     String type = blobInfo.getContentType();
-    // supported upload file types
-    HashSet<String> filetypes = new HashSet<String>();
-    filetypes.addAll(Arrays.asList("image/jpeg", "image/jpg", "image/png"));
-    if (size > 0 && filetypes.contains(type)) {
+    if (size > 0 && FILETYPES.contains(type)) {
       return blobKey;
     } else {
       blobstoreService.delete(blobKey);
