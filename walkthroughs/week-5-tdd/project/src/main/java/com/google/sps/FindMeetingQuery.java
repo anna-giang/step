@@ -22,7 +22,9 @@ import java.util.HashSet;
 public final class FindMeetingQuery {
   /**
    * Given a Collection of all known events and a meeting request, returns the TimeRanges where
-   * the meeting can occur.
+   * the meeting can occur. In the TimeRanges returned, all mandatory meeting attendees will be 
+   * able to attend. If there is at least one timeslot where ALL mandatory and ALL optional attendees 
+   * can attend, then those timeslot(s) will be returned.
    * 
    * Algorithm:
    * 1. Going through all the events, add events that involve meeting attendees (both optional and 
@@ -32,6 +34,10 @@ public final class FindMeetingQuery {
    * 4. Going through the merged events list, add the gaps between events that are longer or 
    * equal to meeting duration to output
    * 5. If there are no meeting times, remove optional attendees, and repeat steps 1-4.
+   * 
+   * @param events Collection of all known events in the day
+   * @param request the MeetingRequest containing the details of the meeting 
+   * @return the Collection of TimeRanges when the meeting can be scheduled
    */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
