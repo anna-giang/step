@@ -75,6 +75,7 @@ public final class FindMeetingQuery {
    * Returns the subset of events in which the attendees provided are attending.
    * @param events the collection of Event objects to be filtered
    * @param attendees the attendees to filter the Event objects by
+   * @return the subset of events in which the attendees are attending
    */
   private ArrayList<Event> filterEventsByAttendees(Collection<Event> events, Collection<String> attendees) {
     ArrayList<Event> eventList = new ArrayList<>();
@@ -130,7 +131,9 @@ public final class FindMeetingQuery {
    * at least of the given duration.
    * @param eventTimes the sorted list of TimeRanges that represent the time periods in the day
    *     when events take place
-   * @param duration the minimum length of the period of availability 
+   * @param duration the minimum length of the period of availability
+   * @return TimeRanges instances representing the time periods when no events take place, 
+   *     that are at least of the given duration
    */
   private ArrayList<TimeRange> findAvailability(ArrayList<TimeRange> eventTimes, long duration) {
     
