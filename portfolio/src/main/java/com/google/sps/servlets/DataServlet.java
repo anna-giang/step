@@ -48,7 +48,7 @@ public class DataServlet extends HttpServlet {
   // Supported upload file types of the comment form
   private final HashSet<String> FILETYPES = new HashSet<String>(
       Arrays.asList("image/jpeg", "image/jpg", "image/png"));
-  // upload file size limit
+  // upload file size limit (bytes)
   private final double MAX_FILESIZE = 5 * Math.pow(10, 6);
 
   @Override
