@@ -48,6 +48,8 @@ public class DataServlet extends HttpServlet {
   // Supported upload file types of the comment form
   private final HashSet<String> FILETYPES = new HashSet<String>(
       Arrays.asList("image/jpeg", "image/jpg", "image/png"));
+  // upload file size limit
+  private final double MAX_FILESIZE = 5 * Math.pow(10, 6);
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -174,7 +176,7 @@ public class DataServlet extends HttpServlet {
     final BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
     long size = blobInfo.getSize();
     String type = blobInfo.getContentType();
-    if (size > 0 && FILETYPES.contains(type)) {
+    if (size > 0 && size <= MAX_FILESIZE && FILETYPES.contains(type)) {
       return blobKey;
     } else {
       blobstoreService.delete(blobKey);
