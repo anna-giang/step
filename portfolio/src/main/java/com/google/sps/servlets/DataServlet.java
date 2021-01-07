@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -29,7 +31,9 @@ import com.google.gson.Gson;
 import com.google.sps.data.Nickname;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.annotation.WebServlet;
@@ -41,6 +45,11 @@ import javax.servlet.http.HttpServletResponse;
  * Linked to <form> element on index.html with id='comment-form' */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  // Supported upload file types of the comment form
+  private final HashSet<String> FILETYPES = new HashSet<String>(
+      Arrays.asList("image/jpeg", "image/jpg", "image/png"));
+  // upload file size limit (bytes)
+  private final double MAX_FILESIZE = 5 * Math.pow(10, 6);
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -160,8 +169,18 @@ public class DataServlet extends HttpServlet {
       return null;
     }
 
-    // Our form only contains a single file input, so get the first index and return
+    // Our form only contains a single file input, so get the first index
     BlobKey blobKey = blobKeys.get(0);
-    return blobKey;
+
+    // Check that the user actually uploaded an image
+    final BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+    long size = blobInfo.getSize();
+    String type = blobInfo.getContentType();
+    if (size > 0 && size <= MAX_FILESIZE && FILETYPES.contains(type)) {
+      return blobKey;
+    } else {
+      blobstoreService.delete(blobKey);
+      return null;
+    }
   }
 }
